@@ -1,4 +1,4 @@
-password for mysql
+Password for mysql
 ```
 W&k9@pZ$v3!m
 ```
@@ -13,5 +13,7 @@ Grant privileges
 GRANT ALL PRIVILEGES ON `value_chain_api`.* TO 'fil'@'%';
 ```
 
-
+Flush Privileges
+```
 FLUSH PRIVILEGES;
+```
