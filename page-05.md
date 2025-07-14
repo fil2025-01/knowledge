@@ -1,5 +1,4 @@
-[Prev](/page-04.md)
-[Next](/page-06.md)
+[Prev](/page-04.md) | [Next](/page-06.md)
 
 ## Serve Laravel with Nginx on a Custom Domain
 

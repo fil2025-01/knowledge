@@ -1,20 +1,31 @@
-1. Using Relative Dates (e.g., "2 days ago")
-This is likely what you're looking for. You can add the %ar placeholder to your format string, which stands for "author date, relative".
+[Prev](/page-02.md) | [Next](/page-04.md)
 
-I've added it in yellow C(yellow) for better visibility.
+-----
 
-bash
+## Add Dates to Your Custom `git log` Format
+
+You can easily add author dates to your custom `git log` alias in a couple of different styles. Here are two common ways to do it.
+
+### 1\. Using Relative Dates (e.g., "2 days ago")
+
+To display a human-readable, relative timestamp, use the `%ar` placeholder. This is often preferred for quickly seeing how recent the work is.
+
+The placeholder `%C(yellow)(%ar)` will display the **a**uthor date, **r**elative, in yellow.
+
+**Command:**
+
+```bash
 git log --format="%C(red)[%h]%C(green)%an %C(yellow)(%ar)%C(reset) --&gt; %s" -n 20
-What changed:
+```
 
-%C(yellow)(%ar) was added to display the relative author date in yellow right after the author's name.
-2. Using a Specific Date Format (e.g., "2023-10-27")
-If you prefer a fixed date format, you can use the --date=short flag combined with the %ad placeholder.
+### 2\. Using a Specific Date Format (e.g., "2023-10-27")
 
-bash
+If you prefer a consistent `YYYY-MM-DD` format, use the `--date=short` flag combined with the `%ad` placeholder for the **a**uthor **d**ate.
+
+**Command:**
+
+```bash
 git log --date=short --format="%C(red)[%h]%C(green)%an %C(yellow)(%ad)%C(reset) --&gt; %s" -n 20
-What changed:
+```
 
---date=short: This tells Git to format dates as YYYY-MM-DD.
-%C(yellow)(%ad): This uses the specified date format (%ad) and colors it yellow.
-Both commands will give you a nicely formatted log with the date included. You can choose whichever style you prefer!
+Choose whichever style you prefer for your workflow\!
