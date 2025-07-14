@@ -1,68 +1,118 @@
 [Prev](/page-04.md)
-[next](/page-06.md)
+[Next](/page-06.md)
 
-### Starting Nginx
+## Serve Laravel with Nginx on a Custom Domain
 
-This is the main command you'll need. It starts Nginx immediately and sets it to launch automatically at login.
+This guide will walk you through setting up your Laravel application to be served by Nginx using a custom local domain like `api.dating-backend.test`.
 
-```bash
-brew services start nginx
-```
+This setup involves two main steps:
 
-After running this, Nginx will be active in the background.
-
------
-
-### \#\# Essential Nginx Commands
-
-Here are the key commands for managing the Nginx service:
-
-**To Stop Nginx:**
-
-```bash
-brew services stop nginx
-```
-
-**To Restart Nginx (Very Important\!):**
-You **must** run this command every time you modify a configuration file to apply your changes.
-
-```bash
-brew services restart nginx
-```
-
-**To Check Nginx Status:**
-See if the service is running, along with other services managed by Homebrew.
-
-```bash
-brew services list
-```
+1.  **DNS Resolution**: Making your local machine recognize the custom domain.
+2.  **Server Configuration**: Configuring Nginx to serve your Laravel app for that domain.
 
 -----
 
-### \#\# Troubleshooting and Tips
+### Step 1: Update Your Hosts File
 
-**Check Your Configuration First 📝**
-Before restarting, always test your configuration files for syntax errors. This prevents Nginx from failing to start.
+First, you need to map the custom domain to your local machine's IP address (`127.0.0.1`) by editing your `hosts` file.
 
-```bash
-nginx -t
-```
+1.  Open your terminal and run the following command to edit the file with administrator privileges:
+    ```bash
+    sudo nano /etc/hosts
+    ```
+2.  Add this line to the end of the file:
+    ```plaintext
+    127.0.0.1   api.dating-backend.test
+    ```
+3.  Save and exit (`Ctrl+X`, then `Y`, then `Enter`).
 
-**Privileged Ports (like port 80) 🔒**
-Your setup uses port 80, which normally requires root privileges. `brew services` manages this for you automatically. However, if you ever need to start Nginx manually, you would need to use `sudo`.
+-----
 
-  * **Manual Start:** `sudo nginx`
-  * **Manual Stop:** `sudo nginx -s stop`
+### Step 2: Configure Nginx
 
-For daily use, sticking with `brew services restart nginx` is the best practice.
+Next, create an Nginx "server block" (virtual host) to direct requests for your custom domain to your Laravel project's files.
 
-**Locating Log Files 🪵**
-If you encounter connection issues, the Nginx error logs are the first place to check. Based on your previous configuration, your custom log files are located at:
+1.  Create a new Nginx configuration file for your site. The location depends on your OS and installation method:
 
-  * **Access Log:** `/Users/fil/Herd/dating-backend/api.dating-backend.access.log`
-  * **Error Log:** `/Users/fil/Herd/dating-backend/api.dating-backend.error.log`
+      * **Linux**: `/etc/nginx/sites-available/api.dating-backend.test.conf`
+      * **macOS (Homebrew)**: `/opt/homebrew/etc/nginx/servers/api.dating-backend.test.conf`
 
-If you are using the default Homebrew logs, you can find them here:
+    Use a text editor like `nano` to create the file:
 
-  * **Apple Silicon Mac:** `/opt/homebrew/var/log/nginx/`
-  * **Intel Mac:** `/usr/local/var/log/nginx/`
+    ```bash
+    # Adjust the path based on your system
+    sudo nano /etc/nginx/sites-available/api.dating-backend.test.conf
+    ```
+
+2.  Paste the following server block configuration into the file.
+
+    ```nginx
+    server {
+        listen 80;
+        server_name api.dating-backend.test;
+        root /Users/fil/Fil/dating-backend/public; # <-- IMPORTANT: Set this to your project's public directory
+
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-Content-Type-Options "nosniff";
+
+        index index.php;
+        charset utf-8;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location = /robots.txt  { access_log off; log_not_found off; }
+
+        error_page 404 /index.php;
+
+        location ~ \.php$ {
+            # IMPORTANT: Adjust this path to your PHP-FPM socket
+            fastcgi_pass 127.0.0.1;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }
+    }
+    ```
+
+    **Key Configuration Points:**
+
+      * **`root`**: Must point to the `public` directory of your Laravel project.
+      * **`fastcgi_pass`**: This directive forwards PHP requests to your PHP-FPM process. The path may vary depending on your PHP version (e.g., `php8.1-fpm.sock`) or setup (e.g., `127.0.0.1:9000`).
+
+-----
+
+### Step 3: Enable the Site and Restart Nginx
+
+Finally, enable the new site configuration and restart Nginx to apply the changes.
+
+1.  **Enable the site (Linux only)**. This creates a symbolic link to the `sites-enabled` directory. This step is not typically required on macOS with Homebrew.
+
+    ```bash
+    sudo ln -s /etc/nginx/sites-available/api.dating-backend.test.conf /etc/nginx/sites-enabled/
+    ```
+
+2.  **Test your Nginx configuration** to ensure there are no syntax errors:
+
+    ```bash
+    sudo nginx -t
+    ```
+
+3.  If the test is successful, **restart Nginx**:
+
+    ```bash
+    # For Linux (systemd)
+    sudo systemctl restart nginx
+
+    # For macOS (Homebrew)
+    brew services restart nginx
+    ```
+
+You should now be able to visit `http://api.dating-backend.test` in your browser and see your Laravel application. ✨
