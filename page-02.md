@@ -1,3 +1,5 @@
+[Prev](/page-01.md) | [Next](/page-03.md)
+
 ## Running SQL Queries from a File
 
 ### Method 1: Using the Command Line 💻
