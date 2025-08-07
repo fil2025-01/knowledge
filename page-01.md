@@ -1,4 +1,4 @@
-[Next](/page-02.md)
+[Next](/page-03.md)
 
 # MySQL Command Cheatsheet
 
