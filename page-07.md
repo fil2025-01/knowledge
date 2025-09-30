@@ -1,11 +1,5 @@
 [Prev](/page-06.md) | [Next](/page-08.md)
 
-[Prev](https://www.google.com/search?q=/page-06.md) | [Next](https://www.google.com/search?q=/page-08.md)
-
-Here are three common ways to create a new database in PostgreSQL, from the most direct method to the streamlined Laravel approach.
-
------
-
 ### \#\# 1. Using a SQL Command 🐘
 
 The most fundamental way is with the `CREATE DATABASE` SQL statement. You can run this from any SQL client (like psql, DBeaver, or TablePlus) connected to your PostgreSQL server.
@@ -54,3 +48,5 @@ DB_DATABASE=your_new_database_name
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
+
+[Prev](/page-06.md) | [Next](/page-08.md)

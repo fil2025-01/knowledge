@@ -87,3 +87,5 @@ git push origin your-feature-branch --force-with-lease
 ```
 
 That's it\! Your feature branch is now up-to-date with a clean, linear history.
+
+[Prev](/page-03.md) | [Next](/page-05.md)

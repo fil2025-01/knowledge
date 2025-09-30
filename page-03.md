@@ -47,3 +47,5 @@ You can also filter the log by a specific author.
 ```bash
 git log --format="%C(yellow)%h %C(reset)%s" --author=fil
 ```
+
+[Prev](/page-01.md) | [Next](/page-04.md)

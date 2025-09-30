@@ -146,3 +146,5 @@ For Laravel projects, using a dedicated package like `spatie/laravel-backup` is 
     ```
 
 The package will create a zip archive containing the `.sql` dump in the storage location defined in your `config/backup.php` file.
+
+[Main](/main.md) | [Next](/page-03.md)

@@ -1,4 +1,4 @@
-[Prev](https://www.google.com/search?q=/page-04.md) | [Next](https://www.google.com/search?q=/page-06.md)
+[Prev](/page-04.md) | [Next](/page-06.md)
 
 ## Serve Laravel with Nginx on a Custom Domain
 
@@ -153,3 +153,5 @@ For Laravel to work correctly, the web server (Nginx) needs permission to write 
     sudo find bootstrap/cache -type d -exec chmod 775 {} \;
     sudo find bootstrap/cache -type f -exec chmod 664 {} \;
     ```
+
+[Prev](/page-04.md) | [Next](/page-06.md)
